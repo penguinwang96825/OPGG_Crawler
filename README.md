@@ -1,5 +1,5 @@
 # LOL_OPGG_scraper
-A note to build a web scraper for OPGG by using beautifulsoup.
+A note to build a web scraper for [OPGG](http://na.op.gg/champion/statistics) by using beautifulsoup.
 
 ## Import packages
 ```python
