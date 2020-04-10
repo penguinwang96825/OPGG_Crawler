@@ -31,6 +31,13 @@ def get_hero_information(hlist, html, position):
 
 ## Get the dataframe
 ```python
+def get_text(url):
+     try:
+        r = requests.get(url, timeout=30, cookies={'customLocale': 'en_US'})
+        return r.text
+     except Exception as error:
+        print(error)
+
 def get_heros_dataframe():
     position = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"]
     df = {name: pd.DataFrame() for name in position}
