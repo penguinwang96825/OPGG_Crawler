@@ -11,13 +11,21 @@ from bs4 import BeautifulSoup
 %matplotlib inline
 ```
 
-## Get heros information
+## Main Code
+### Get heros information
+1. Extract heroName, winRate, pickRate and lane from the table.
+2. Return a list for later use.
+
 ```python
 def get_hero_information(hlist, html, position):
     """
     position: TOP JUNGLE MID ADC SUPPORT
     """
+    
+    # Parse the html page by using BeautifulSoup
     soup = BeautifulSoup(html, "html.parser")
+    
+    # Loop the table
     for tr in soup.find(name="tbody", attrs="tabItem champion-trend-tier-{}".format(position)).children:
         if isinstance(tr, bs4.element.Tag):
             tds = tr('td')
@@ -29,18 +37,29 @@ def get_hero_information(hlist, html, position):
     return hlist
 ```
 
-## Get the dataframe
+### Get the dataframe
+Utilise `get_text` function to get the text content of the html webpage.
+
 ```python
 def get_text(url):
+    # Get the html page by using "request.get" function
      try:
+        # Set cookies to the local (US), avoid the language transform into others.
         r = requests.get(url, timeout=30, cookies={'customLocale': 'en_US'})
         return r.text
      except Exception as error:
         print(error)
+```
 
+Utilise `get_hero_information` function in a "for" loop to extract information (win rate and pick rate) of five positions.
+Next step is to return a dataframe.
+
+```
 def get_heros_dataframe():
     position = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"]
+    # Establish five empty dataframes
     df = {name: pd.DataFrame() for name in position}
+    # Concatenate all the five dataframes to one dataframe
     hero_df = pd.DataFrame()
     for name, df in df.items():
         url = "http://na.op.gg/champion/statistics"
@@ -54,7 +73,10 @@ def get_heros_dataframe():
     return hero_df
 ```
 
-## Dataframe preprocessing
+### Dataframe preprocessing
+Transform hero_name and lane into string.
+Transform win_rate and pick_rate into float number.
+
 ```python
 def hero_df_preprocessing(hero_df):
     # Change every element in dataframe into string
@@ -72,7 +94,7 @@ def hero_df_preprocessing(hero_df):
     return hero_df
 ```
 
-## Take a look at the dataframe
+### Take a look at the dataframe
 ```python
 hero_df.sample(5)
 ```
@@ -86,6 +108,7 @@ hero_df.sample(5)
 | 18 | Sett | 0.4794 | 0.0885 | SUPPORT |
 
 ## Visualise win rate and pick rate
+Visualise the distribution of win rate as well as pick rate.
 ```python
 def visualise_heros_wr_and_pr(hero_df):
     plt.style.use('ggplot')
