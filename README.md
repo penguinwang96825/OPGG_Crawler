@@ -54,7 +54,7 @@ def get_text(url):
 Utilise `get_hero_information` function in a "for" loop to extract information (win rate and pick rate) of five positions.
 Next step is to return a dataframe.
 
-```
+```python
 def get_heros_dataframe():
     position = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"]
     # Establish five empty dataframes
